@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Survos\GoogleSheetsBundle\Command;
 
 use Survos\GoogleSheetsBundle\Service\GoogleApiClientService;
@@ -26,27 +28,27 @@ final class GoogleSheetsApiCommand
         #[Option('Number of rows for the header')] int $header = 0,
         #[Option('Grid data as JSON')] ?string $data = null,
     ): int {
-        $parsedData = $data !== null ? json_decode($data) : null;
+        $parsedData = null !== $data ? json_decode($data) : null;
         $service = $this->googleSheetsApiService;
 
         $response = 'no action has been made';
-        if ($function === 'token') {
+        if ('token' === $function) {
             $response = $this->clientService->createNewSheetApiAccessToken();
         } else {
             $service->setSheetServices($id);
         }
 
-        if ($function === 'get') {
+        if ('get' === $function) {
             $service->setSheetServices($id);
             $response = $service->getGoogleSpreadSheets();
             dd($response);
-        } elseif ($function === 'create') {
+        } elseif ('create' === $function) {
             $response = $service->createNewSheet($title, $parsedData, $header);
-        } elseif ($function === 'update') {
+        } elseif ('update' === $function) {
             $response = $service->updateSheet($title, $parsedData, $header);
-        } elseif ($function === 'clear') {
+        } elseif ('clear' === $function) {
             $response = $service->clearSheetByTitle($title);
-        } elseif ($function === 'delete') {
+        } elseif ('delete' === $function) {
             $response = $service->deleteSheetByTitle($title);
         }
 

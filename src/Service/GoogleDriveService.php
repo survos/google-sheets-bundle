@@ -1,7 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Survos\GoogleSheetsBundle\Service;
-use Google_Service_Drive;
 
 class GoogleDriveService
 {
@@ -17,26 +18,26 @@ class GoogleDriveService
         }
 
         $client = $this->googleClientService->getClient();
-            $service = new Google_Service_Drive($client);
+        $service = new \Google_Service_Drive($client);
 
-            $response = $service->files->get($fileId, [
-                'alt' => 'media'
-            ]);
+        $response = $service->files->get($fileId, [
+            'alt' => 'media',
+        ]);
 
-            $content = $response->getBody()->getContents();
+        $content = $response->getBody()->getContents();
 
-//        $fileHandler = fopen($destinationPath, 'w');
+        //        $fileHandler = fopen($destinationPath, 'w');
         // @todo: stream response instead of writing all at one
-//        foreach ($client->stream($response) as $chunk) {
-//            fwrite($fileHandler, $chunk->getContent());
-//        }
-//        fclose($fileHandler);
+        //        foreach ($client->stream($response) as $chunk) {
+        //            fwrite($fileHandler, $chunk->getContent());
+        //        }
+        //        fclose($fileHandler);
 
         // @todo: check the mimetype and rename the file accordingly, since drive file urls don't tell us
 
         try {
         } catch (\Exception $exception) {
-//            dd($exception->getMessage(), $client);
+            //            dd($exception->getMessage(), $client);
         }
 
         file_put_contents($destinationPath, $content);

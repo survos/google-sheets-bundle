@@ -4,20 +4,18 @@ declare(strict_types=1);
 
 namespace Survos\GoogleSheetsBundle\Service;
 
-use Google_Client;
-use Google_Service_Sheets;
-
 class GoogleApiClientService
 {
     public function __construct(
         private readonly string $applicationName = '',
         private readonly string $credentials = '',
         private readonly string $clientSecret = '',
-    ) {}
+    ) {
+    }
 
-    public function getClient(string $type = 'offline'): Google_Client
+    public function getClient(string $type = 'offline'): \Google_Client
     {
-        $client = new Google_Client();
+        $client = new \Google_Client();
 
         // $clientSecret is the raw JSON string (decoded by Symfony's base64 env processor)
         // or an array — setAuthConfig accepts both
